@@ -3,6 +3,7 @@
 @using CalculadoraImportacionesWeb.Models
 @using CalculadoraImportacionesWeb.Services
 @using CalculadoraImportacionesWeb.Data
+@using Microsoft.EntityFrameworkCore
 @inject AppDbContext Db
 @inject ICalculadoraService Calculadora
 
@@ -38,13 +39,13 @@ else
                     <td>
                         <input type="number" step="0.01" 
                                @bind="producto.ValorFOBYuan" 
-                               @onchange="@(() => RecalcularProducto(producto))"
+                               @bind:event="oninput"
                                class="form-control form-control-sm" />
                     </td>
                     <td>
                         <input type="number" 
                                @bind="producto.Cantidad" 
-                               @onchange="@(() => RecalcularProducto(producto))"
+                               @bind:event="oninput"
                                class="form-control form-control-sm" />
                     </td>
                     <td>$@producto.CostoTotal.ToString("N2")</td>
