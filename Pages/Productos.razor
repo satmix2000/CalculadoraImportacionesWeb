@@ -6,74 +6,158 @@
 @using Microsoft.EntityFrameworkCore
 @inject AppDbContext Db
 @inject ICalculadoraService Calculadora
+@inject NavigationManager Navigation
 
-<h3>Calculadora de Importaciones</h3>
+<h2 class="mb-4">📦 Gestión de Productos</h2>
 
-<button @onclick="AgregarProducto" class="btn btn-primary mb-3">Nuevo Producto</button>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar productos..." @bind="terminoBusqueda" />
+            <button class="btn btn-outline-secondary" @onclick="BuscarProductos">
+                🔍 Buscar
+            </button>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <button class="btn btn-success" @onclick="AgregarProducto">
+            ➕ Nuevo Producto
+        </button>
+        <button class="btn btn-info" @onclick="ActualizarTasas">
+            🔄 Actualizar Tasas
+        </button>
+    </div>
+</div>
 
 @if (productos.Count == 0)
 {
-    <div class="alert alert-info">
+    <div class="alert alert-warning">
         No hay productos. Haz clic en "Nuevo Producto" para agregar uno.
     </div>
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Descripción</th>
-                <th>FOB (¥)</th>
-                <th>Cantidad</th>
-                <th>Costo (USD)</th>
-                <th>Precio Venta (ARS)</th>
-                <th>Ganancia</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var producto in productos)
-            {
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
                 <tr>
-                    <td>@producto.Descripcion</td>
-                    <td>
-                        <input type="number" step="0.01" 
-                               @bind="producto.ValorFOBYuan" 
-                               @bind:event="oninput"
-                               class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                        <input type="number" 
-                               @bind="producto.Cantidad" 
-                               @bind:event="oninput"
-                               class="form-control form-control-sm" />
-                    </td>
-                    <td>$@producto.CostoTotal.ToString("N2")</td>
-                    <td>$@producto.PrecioVentaARS.ToString("N2")</td>
-                    <td>@producto.PorcentajeGanancia.ToString("N1")%</td>
-                    <td>
-                        <button @onclick="@(() => EliminarProducto(producto))" 
-                                class="btn btn-sm btn-danger">Eliminar</button>
-                    </td>
+                    <th>ID</th>
+                    <th>Descripción</th>
+                    <th>FOB (¥)</th>
+                    <th>Cant.</th>
+                    <th>Peso (kg)</th>
+                    <th>Costo (USD)</th>
+                    <th>Precio (ARS)</th>
+                    <th>Ganancia</th>
+                    <th>Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var producto in productos)
+                {
+                    <tr>
+                        <td>@producto.ID</td>
+                        <td>
+                            <strong>@producto.Descripcion</strong>
+                            @if (!string.IsNullOrEmpty(producto.NomenclaturaComun))
+                            {
+                                <br /><small class="text-muted">@producto.NomenclaturaComun</small>
+                            }
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" 
+                                   @bind="producto.ValorFOBYuan" 
+                                   @bind:event="oninput"
+                                   class="form-control form-control-sm"
+                                   style="width: 100px" />
+                        </td>
+                        <td>
+                            <input type="number" 
+                                   @bind="producto.Cantidad" 
+                                   @bind:event="oninput"
+                                   class="form-control form-control-sm"
+                                   style="width: 80px" />
+                        </td>
+                        <td>@producto.PesoUnitario.ToString("N2")</td>
+                        <td class="text-end">$@producto.CostoTotal.ToString("N2")</td>
+                        <td class="text-end">
+                            <span class="badge bg-success">
+                                $@producto.PrecioVentaARS.ToString("N2")
+                            </span>
+                        </td>
+                        <td>
+                            @if (producto.PorcentajeGanancia >= 30)
+                            {
+                                <span class="badge bg-success">@producto.PorcentajeGanancia.ToString("N1")%</span>
+                            }
+                            else if (producto.PorcentajeGanancia >= 20)
+                            {
+                                <span class="badge bg-warning">@producto.PorcentajeGanancia.ToString("N1")%</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">@producto.PorcentajeGanancia.ToString("N1")%</span>
+                            }
+                        </td>
+                        <td>
+                            <button @onclick="@(() => EditarProducto(producto))" 
+                                    class="btn btn-sm btn-primary">
+                                ✏️ Editar
+                            </button>
+                            <button @onclick="@(() => EliminarProducto(producto))" 
+                                    class="btn btn-sm btn-danger">
+                                🗑️ Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
-<div class="card mt-4">
-    <div class="card-header">
-        <h5>Resumen</h5>
+<!-- Tarjetas de resumen -->
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Productos</h5>
+                <p class="card-text display-6">@productos.Count</p>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        <p>Total Productos: @productos.Count</p>
-        <p>Costo Total USD: $@productos.Sum(p => p.CostoTotal).ToString("N2")</p>
-        <p>Valor Total ARS: $@productos.Sum(p => p.PrecioVentaARS).ToString("N2")</p>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Costo Total USD</h5>
+                <p class="card-text display-6">$@productos.Sum(p => p.CostoTotal).ToString("N2")</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Valor Total ARS</h5>
+                <p class="card-text display-6">$@productos.Sum(p => p.PrecioVentaARS).ToString("N2")</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Ganancia Promedio</h5>
+                <p class="card-text display-6">
+                    @(productos.Count > 0 ? productos.Average(p => p.PorcentajeGanancia).ToString("N1") : "0")%
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 
 @code {
     private List<Producto> productos = new();
+    private List<Producto> productosOriginales = new();
+    private string terminoBusqueda = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,10 +169,26 @@ else
         try
         {
             productos = await Db.Productos.ToListAsync();
+            productosOriginales = productos.ToList();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al cargar productos: {ex.Message}");
+        }
+    }
+
+    private void BuscarProductos()
+    {
+        if (string.IsNullOrWhiteSpace(terminoBusqueda))
+        {
+            productos = productosOriginales;
+        }
+        else
+        {
+            productos = productosOriginales
+                .Where(p => p.Descripcion.Contains(terminoBusqueda, StringComparison.OrdinalIgnoreCase) ||
+                           p.NomenclaturaComun.Contains(terminoBusqueda, StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
     }
 
@@ -102,13 +202,22 @@ else
             Cantidad = 1,
             PorcentajeArancelAduana = 0.30m,
             PorcentajeArancelEstadisticas = 0.025m,
-            IVA = 0.21m
+            IVA = 0.21m,
+            NomenclaturaComun = "8504.40.00"
         };
 
         await RecalcularProducto(nuevoProducto);
         Db.Productos.Add(nuevoProducto);
         await Db.SaveChangesAsync();
         await CargarProductos();
+    }
+
+    private async Task EditarProducto(Producto producto)
+    {
+        // Aquí podríamos abrir un modal o página de edición
+        Console.WriteLine($"Editando producto: {producto.Descripcion}");
+        // Por ahora, solo recalculamos
+        await RecalcularProducto(producto);
     }
 
     private async Task RecalcularProducto(Producto producto)
@@ -128,8 +237,19 @@ else
 
     private async Task EliminarProducto(Producto producto)
     {
-        Db.Productos.Remove(producto);
-        await Db.SaveChangesAsync();
+        if (await DialogService.Confirm($"¿Eliminar '{producto.Descripcion}'?", "Confirmar"))
+        {
+            Db.Productos.Remove(producto);
+            await Db.SaveChangesAsync();
+            await CargarProductos();
+        }
+    }
+
+    private async Task ActualizarTasas()
+    {
+        // Aquí implementaríamos la actualización de tasas
+        Console.WriteLine("Actualizando tasas de cambio...");
+        // Por ahora, solo recargamos
         await CargarProductos();
     }
 }
