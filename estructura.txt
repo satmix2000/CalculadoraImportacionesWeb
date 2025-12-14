@@ -1,0 +1,31 @@
+ROADMAP PARA CONSTRUIR LA APLICACIÓN
+=====================================
+
+FASE 1: FUNDAMENTOS (HOY)
+1. Crear proyecto Blazor Server
+2. Configurar base de datos SQLite
+3. Migrar modelos básicos (Producto, Ajustes, Cotizacion)
+
+FASE 2: LÓGICA DE NEGOCIO (MAÑANA)
+1. Migrar CalculadoraProducto.cs
+2. Migrar CotizacionService.cs
+3. Crear servicios inyectables
+
+FASE 3: INTERFAZ (DÍA 3)
+1. Página principal Productos.razor
+2. Componente de edición
+3. Página de ajustes
+
+FASE 4: MEJORAS (DÍA 4+)
+1. Porcentajes con "%"
+2. Reportes PDF
+3. Dashboard
+
+ARCHIVOS A COPIAR (EN ESTE ORDEN):
+1. /Models/Producto.cs
+2. /Models/Ajustes.cs
+3. /Models/Cotizacion.cs
+4. /Services/CotizacionService.cs
+5. /Data/AppDbContext.cs
+6. /Services/CalculadoraService.cs
+7. /Pages/Productos.razor
