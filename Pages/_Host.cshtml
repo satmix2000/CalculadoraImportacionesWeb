@@ -13,10 +13,14 @@
     <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
+    <!-- Página de inicio simple -->
     <div class="container mt-4">
         <h1>Calculadora de Importaciones</h1>
+        <p class="lead">Sistema para cálculo de importaciones China → Argentina</p>
         <hr />
-        @Body
+        
+        <!-- Renderizamos directamente el componente Productos -->
+        @(await Html.RenderComponentAsync<CalculadoraImportacionesWeb.Pages.Productos>(RenderMode.ServerPrerendered))
     </div>
 
     <script src="_framework/blazor.server.js"></script>
