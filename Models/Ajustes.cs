@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CalculadoraImportacionesWeb.Models
 {
@@ -16,7 +17,6 @@ namespace CalculadoraImportacionesWeb.Models
         [Range(0.0001, 10, ErrorMessage = "Tasa inválida")]
         public decimal TasaCNYUSD { get; set; } = 0.1388m;
 
-        // Porcentajes (se guardan como decimales: 0.30 = 30%)
         [Display(Name = "Arancel Aduana")]
         [Range(0, 1, ErrorMessage = "0% a 100%")]
         public decimal PorcentajeArancelAduana { get; set; } = 0.30m;
@@ -33,7 +33,6 @@ namespace CalculadoraImportacionesWeb.Models
         [Range(0, 1, ErrorMessage = "0% a 100%")]
         public decimal MargenGananciaDeseado { get; set; } = 0.35m;
 
-        // Costos fijos
         [Display(Name = "Seguro")]
         [Range(0, 1, ErrorMessage = "0% a 100%")]
         public decimal PorcentajeSeguro { get; set; } = 0.0121m;
@@ -54,7 +53,6 @@ namespace CalculadoraImportacionesWeb.Models
         [Range(0, 1, ErrorMessage = "0% a 100%")]
         public decimal PorcentajeFscSec { get; set; } = 0.25m;
 
-        // MercadoLibre
         [Display(Name = "Comisión ML")]
         [Range(0, 1, ErrorMessage = "0% a 100%")]
         public decimal CargoMercadoLibrePorcentaje { get; set; } = 0.16m;
@@ -68,11 +66,9 @@ namespace CalculadoraImportacionesWeb.Models
         [Display(Name = "Costo Fijo 3 (25-33k ARS)")]
         public decimal CargoMercadoLibreFijo3 { get; set; } = 2810m;
 
-        // Auditoría
         public DateTime UltimaActualizacion { get; set; } = DateTime.Now;
         public string ActualizadoPor { get; set; } = "Sistema";
 
-        // Propiedades para mostrar (PORCENTAJES AMIGABLES)
         [NotMapped]
         [Display(Name = "Arancel Aduana")]
         public string PorcentajeArancelAduanaDisplay => $"{PorcentajeArancelAduana * 100:N1}%";
