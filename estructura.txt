@@ -28,4 +28,17 @@ ARCHIVOS A COPIAR (EN ESTE ORDEN):
 4. /Services/CotizacionService.cs
 5. /Data/AppDbContext.cs
 6. /Services/CalculadoraService.cs
+
+ARCHIVOS COMPLETADOS HOY:
+✅ /Models/Producto.cs
+✅ /Data/AppDbContext.cs
+✅ /Models/Ajustes.cs
+✅ /Models/Cotizacion.cs
+
+PRÓXIMOS ARCHIVOS (DÍA 3):
+1. /Services/CotizacionService.cs
+2. /Services/CalculadoraService.cs
+
+LUEGO (DÍA 4):
+3. /Pages/Productos.razor
 7. /Pages/Productos.razor
