@@ -1,0 +1,41 @@
+@namespace CalculadoraImportacionesWeb.Components
+
+<div class="producto-detalles">
+    @if (Producto != null)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h5>@Producto.Descripcion</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Información Básica</h6>
+                        <p><strong>Cantidad:</strong> @Producto.Cantidad</p>
+                        <p><strong>Valor FOB:</strong> ¥@Producto.ValorFOBYuan.ToString("N2")</p>
+                        <p><strong>Peso Unitario:</strong> @Producto.PesoUnitario.ToString("N2") kg</p>
+                        <p><strong>Fecha Ingreso:</strong> @Producto.FechaIngreso.ToString("dd/MM/yyyy")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Cálculos</h6>
+                        <p><strong>Costo Total:</strong> $@Producto.CostoTotal.ToString("N2") USD</p>
+                        <p><strong>Costo Unitario:</strong> $@Producto.CostoARS.ToString("N2") ARS</p>
+                        <p><strong>Precio Venta:</strong> $@Producto.PrecioVentaARS.ToString("N2") ARS</p>
+                        <p><strong>Ganancia:</strong> @Producto.PorcentajeGanancia.ToString("N1")%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Seleccione un producto para ver los detalles
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Producto? Producto { get; set; }
+}
