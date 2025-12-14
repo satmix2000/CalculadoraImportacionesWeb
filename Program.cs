@@ -1,6 +1,10 @@
+using System;
 using CalculadoraImportacionesWeb.Data;
 using CalculadoraImportacionesWeb.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +57,7 @@ using (var scope = app.Services.CreateScope())
         // Agregar datos iniciales si la tabla está vacía
         if (!dbContext.Productos.Any())
         {
-            dbContext.Productos.Add(new Models.Producto
+            dbContext.Productos.Add(new CalculadoraImportacionesWeb.Models.Producto
             {
                 Descripcion = "Producto de Ejemplo",
                 ValorFOBYuan = 1000,
