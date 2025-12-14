@@ -42,3 +42,17 @@ PRÓXIMOS ARCHIVOS (DÍA 3):
 LUEGO (DÍA 4):
 3. /Pages/Productos.razor
 7. /Pages/Productos.razor
+ARCHIVOS COMPLETADOS (DÍAS 1-3):
+✅ /Models/Producto.cs
+✅ /Data/AppDbContext.cs
+✅ /Models/Ajustes.cs
+✅ /Models/Cotizacion.cs
+✅ /Services/CotizacionService.cs
+✅ /Services/CalculadoraService.cs
+
+ÚLTIMOS ARCHIVOS (DÍA 4):
+1. /Program.cs
+2. /Pages/Productos.razor
+
+YA PODRÁS EJECUTAR LA APLICACIÓN WEB 🚀
+
