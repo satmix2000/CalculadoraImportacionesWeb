@@ -1,10 +1,12 @@
 using System;
+using System.Linq; // <-- AGREGAR ESTA LÍNEA
 using CalculadoraImportacionesWeb.Data;
 using CalculadoraImportacionesWeb.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging; // <-- AG
 
 var builder = WebApplication.CreateBuilder(args);
 
