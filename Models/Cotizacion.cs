@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CalculadoraImportacionesWeb.Models
 {
@@ -20,11 +21,9 @@ namespace CalculadoraImportacionesWeb.Models
         [Display(Name = "Es Fallback")]
         public bool EsFallback { get; set; } = false;
 
-        // Propiedad calculada para mostrar
         [Display(Name = "CNY → ARS (Indirecto)")]
         public decimal CnyArsIndirecto => CnyUsd * UsdArs;
 
-        // Propiedades para mostrar formateadas
         [NotMapped]
         [Display(Name = "CNY/USD")]
         public string CnyUsdDisplay => $"{CnyUsd:N6}";
